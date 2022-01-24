@@ -126,4 +126,65 @@ x = torch.tensor([0, 1, 0, 1, 1], dtype=torch.bool)
 print(torch.any(x)) # check if any is true
 print(torch.all(x)) # check if all are true
 
+# Tensor indexing
+batch_size = 10
+features = 25
+x = torch.rand(batch_size, features)
 
+print(x[0].shape) # first example of the batch
+print(x[:,0].shape) # first column of the whole batch
+print(x[2:5, 0:10].shape)
+
+x = torch.arange(10)
+indices = [2, 5, 6]
+print(x[indices]) # slicing with indices
+
+x = torch.rand((3, 5))
+rows = torch.tensor([1, 0])
+cols = torch.tensor([4, 1])
+print(x[rows, cols].shape)
+
+# indexing with condition
+x = torch.arange(10)
+print(x[(x < 3) | (x > 8)])
+print(x[x%2 == 0])
+print(torch.where(x > 5, x, x*2))
+
+# other useful operations
+print(x.numel()) # number of elements
+print(x.ndim) # number of dimensions
+
+# Reshaping tensors
+x = torch.arange(9)
+print(x.view(3, 3))
+print(x.reshape(3, 3))
+x = x.view(3, 3)
+
+# transpose
+print(x.t())
+print(x.T)
+print(x.transpose(1, 0))
+
+# concatenate tensors
+x1 = torch.rand((2, 5))
+x2 = torch.rand((2, 5))
+print(torch.cat((x1, x2), dim=0)) # cat on first dimension
+print(torch.cat((x1, x2), dim=1)) # cat on second dimension
+
+# Manipulating dimensions
+batch = 64
+x = torch.rand((batch, 2, 5))
+print(x.view(-1)) # flatten matrix
+print(x.view(batch, -1)) # keep number of batches, flatten by batch
+
+z = x.permute(0, 2, 1) # swap dimensions
+print(z.shape)
+
+x = torch.arange(10) # shape (10,)
+print(x.unsqueeze(0).shape) # expands the dimension at the 0th dim, shape -> (1, 10)
+
+x = torch.arange(10).unsqueeze(0).unsqueeze(1) # shape (1, 1, 10)
+print(x.shape)
+x = x.squeeze(0) # squeeze / collapse the 0th dimension, shape (1, 10)
+print(x.shape)
+x = x.squeeze(0) # shape (10,)
